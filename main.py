@@ -216,13 +216,20 @@ class panel(QMainWindow):
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
 
-        # with sqlite3.connect('Acount.db') as cnx:
-        #     cursor = cnx.cursor()
-        #     cursor.execute('''SELECT name FROM period WHERE username = \'%s\' ''' % cache)
-        #     for name in cursor:
-        #         self.Ui.comboBox_period_insert.addItem(name[0])
-        #         self.Ui.comboBox_period.addItem(name[0])
+        # welcome message
+        self.Ui.label_user.setText(f'Welcome {cache}')
+
+        with sqlite3.connect('Acount.db') as cnx:
+            cursor = cnx.cursor()
+            cursor.execute('''SELECT name FROM period WHERE username = \'%s\' ''' % cache)
+            for name in cursor:
+                self.Ui.comboBox_period_insert.addItem(name[0])
+                self.Ui.comboBox_period.addItem(name[0])
             
+            cursor.execute('''SELECT name FROM category WHERE username = \'%s\' ''' % cache)
+            for category in cursor:
+                self.Ui.comboBox_category_insert.addItem(category[0])
+                self.Ui.comboBox_category.addItem(category[0])
 
         self.show()
 
@@ -319,7 +326,26 @@ class panel(QMainWindow):
             self.Ui.label_insert_category.setStyleSheet('color: rgb(255, 6, 51);')
 
     def insert_amount(self):
-        pass
+        """ daily amount """
+        tag = random.randint(100000, 999999)
+        period = self.Ui.comboBox_period_insert.currentText()
+        amount = int(self.Ui.lineEdit_insert_amount.text()) if len(self.Ui.lineEdit_insert_amount.text()) > 0 else None 
+        description = self.Ui.textEdit_description_insert.toPlainText()
+        date = self.Ui.dateEdit_insert_amount.date().toString('yyyy-MM-dd')
+        category = self.Ui.comboBox_category_insert.currentText()
+
+        try:
+            with sqlite3.connect('Acount.db') as cnx:
+                cursor = cnx.cursor()
+                cursor.execute(""" INSERT INTO data VALUES(
+                    \'%i\', \'%s\', \'%s\', \'%i\', \'%s\', \'%s\', \'%s\'
+                ) """ % (tag, category, period, amount, description, date, cache))
+                cnx.commit()
+            self.Ui.label_insert_amount_error.setText('Entered successfully')
+            self.Ui.label_insert_amount_error.setStyleSheet('color: #2651c7;')
+        except:
+            self.Ui.label_insert_amount_error.setText('All items are required')
+            self.Ui.label_insert_amount_error.setStyleSheet('color: rgb(255, 6, 51);')
 
 
 
