@@ -1,5 +1,6 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtSql import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -230,6 +231,25 @@ class panel(QMainWindow):
             for category in cursor:
                 self.Ui.comboBox_category_insert.addItem(category[0])
                 self.Ui.comboBox_category.addItem(category[0])
+
+        # budget and categiry tables
+        db = QSqlDatabase.addDatabase("QSQLITE")
+        db.setDatabaseName("Acount.db")
+        db.open()
+
+        period_table = QSqlQueryModel()
+        period_table.setQuery(''' SELECT name, start, end, budget FROM period WHERE username = \'%s\' ''' % cache, db)
+
+        self.Ui.tableView_budget.setModel(period_table)
+        self.Ui.tableView_budget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.Ui.tableView_budget.verticalHeader().setVisible(False)
+
+        category_table = QSqlQueryModel()
+        category_table.setQuery(''' SELECT name FROM category WHERE username = \'%s\' ''' % cache, db)
+
+        self.Ui.tableView_category.setModel(category_table)
+        self.Ui.tableView_category.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.Ui.tableView_category.verticalHeader().setVisible(False)
 
         self.show()
 
