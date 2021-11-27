@@ -251,6 +251,9 @@ class panel(QMainWindow):
         self.Ui.tableView_category.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.Ui.tableView_category.verticalHeader().setVisible(False)
 
+        db.close()
+        db.removeDatabase("qt_sql_default_connection")
+
         self.show()
 
         # menubar connections
@@ -265,6 +268,8 @@ class panel(QMainWindow):
         self.Ui.btn_insert_category.clicked.connect(self.insert_category)
         self.Ui.btn_insert_amount.clicked.connect(self.insert_amount)
 
+        # home page connections
+        self.Ui.btn_filter.clicked.connect(self.filter)
 
     def mousePressEvent(self, evt):
         """Select the toolbar."""
@@ -367,6 +372,48 @@ class panel(QMainWindow):
             self.Ui.label_insert_amount_error.setText('All items are required')
             self.Ui.label_insert_amount_error.setStyleSheet('color: rgb(255, 6, 51);')
 
+    def filter(self):
+        QSqlDatabase.removeDatabase(QSqlDatabase.database().connectionName())
+
+        period = self.Ui.comboBox_period.currentText()
+        category = self.Ui.comboBox_category.currentText()
+        
+        if category == 'All':
+            db1 = QSqlDatabase.addDatabase("QSQLITE")
+            db1.setDatabaseName("Acount.db")
+            db1.open()
+
+            data_table = QSqlQueryModel()
+            data_table.setQuery(''' 
+            SELECT tag, categury, period, amount, description, date 
+            FROM data 
+            WHERE period = \'%s\' AND username = \'%s\'
+            ''' % (period, cache), db1)
+
+            # with sqlite3.connect('Acount.db') as cnx:
+            #     cursor = cnx.cursor()
+            #     cursor.execute(''' 
+            # SELECT tag, categury, period, amount, description, date 
+            # FROM data 
+            # WHERE period = \'%s\' AND username = \'%s\'
+            # ''' % (period, cache))
+            # print(cursor.fetchall())
+        else:
+            db2 = QSqlDatabase.addDatabase("QSQLITE")
+            db2.setDatabaseName("Acount.db")
+            db2.open()
+
+            data_table = QSqlQueryModel()
+            data_table.setQuery(''' 
+            SELECT tag, categury, period, amount, description, date 
+            FROM data 
+            WHERE period = \'%s\' AND categury = \'%s\' AND username = \'%s\'
+            ''' % (period, category, cache), db2)
+            
+
+        self.Ui.tableView_data.setModel(data_table)
+        self.Ui.tableView_data.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.Ui.tableView_data.verticalHeader().setVisible(False)
 
 
 
