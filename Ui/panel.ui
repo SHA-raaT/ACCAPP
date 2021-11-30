@@ -393,9 +393,69 @@ border-radius: 20px;
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">alternate-background-color: #E2E2E2;
+        <string notr="true">QTableView
+{
+alternate-background-color: #E2E2E2;
 background: #CAB8FF;
-border-radius: 6px;</string>
+border-radius: 6px;
+}
+
+QScrollBar:vertical
+    {
+        background-color: #ccc;
+        width: 15px;
+        margin: 15px 3px 15px 3px;
+        border: 1px transparent #2A2929;
+        border-radius: 4px;
+    }
+QScrollBar::handle:vertical
+    {
+        background-color: rgb(121, 56, 242);         /* #605F5F; */
+        min-height: 5px;
+        border-radius: 4px;
+    }
+QScrollBar::sub-line:vertical
+    {
+        margin: 3px 0px 3px 0px;
+        border-image: url(:/images/up_arrow_disabled.png);        /* # &lt;-------- */
+        height: 10px;
+        width: 10px;
+        subcontrol-position: top;
+        subcontrol-origin: margin;
+    }
+QScrollBar::add-line:vertical
+    {
+        margin: 3px 0px 3px 0px;
+        border-image: url(:/images/down_arrow_disabled.png);       /* # &lt;-------- */
+        height: 10px;
+        width: 10px;
+        subcontrol-position: bottom;
+        subcontrol-origin: margin;
+    }
+QScrollBar::sub-line:vertical:hover,QScrollBar::sub-line:vertical:on
+    {
+        border-image: url(:/images/up_arrow.png);                  /* # &lt;-------- */
+        height: 10px;
+        width: 10px;
+        subcontrol-position: top;
+        subcontrol-origin: margin;
+    }
+QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:on
+    {
+        border-image: url(:/images/down_arrow.png);                /* # &lt;-------- */
+        height: 10px;
+        width: 10px;
+        subcontrol-position: bottom;
+        subcontrol-origin: margin;
+    }
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
+    {
+        background: none;
+    }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+    {
+        background: none;
+    }</string>
        </property>
        <property name="horizontalScrollBarPolicy">
         <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -636,7 +696,7 @@ p, li { white-space: pre-wrap; }
          <x>1150</x>
          <y>30</y>
          <width>151</width>
-         <height>261</height>
+         <height>191</height>
         </rect>
        </property>
        <property name="font">
@@ -693,7 +753,7 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>70</y>
+          <y>74</y>
           <width>111</width>
           <height>41</height>
          </rect>
@@ -725,11 +785,11 @@ QPushButton:hover {
          <string>Chart</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="btn_delete">
+       <widget class="QPushButton" name="btn_print">
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>190</y>
+          <y>130</y>
           <width>111</width>
           <height>41</height>
          </rect>
@@ -758,64 +818,7 @@ QPushButton:hover {
 }</string>
         </property>
         <property name="text">
-         <string>Delete</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButton">
-        <property name="geometry">
-         <rect>
-          <x>19</x>
-          <y>160</y>
-          <width>95</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-         </font>
-        </property>
-        <property name="text">
-         <string>Budget</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButton_2">
-        <property name="geometry">
-         <rect>
-          <x>19</x>
-          <y>140</y>
-          <width>95</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-         </font>
-        </property>
-        <property name="text">
-         <string>Category</string>
-        </property>
-       </widget>
-       <widget class="QRadioButton" name="radioButton_3">
-        <property name="geometry">
-         <rect>
-          <x>19</x>
-          <y>120</y>
-          <width>95</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-         </font>
-        </property>
-        <property name="text">
-         <string>Data</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
+         <string>Print</string>
         </property>
        </widget>
       </widget>
@@ -861,7 +864,7 @@ QProgressBar{
        <property name="geometry">
         <rect>
          <x>960</x>
-         <y>394</y>
+         <y>399</y>
          <width>321</width>
          <height>91</height>
         </rect>
@@ -916,81 +919,6 @@ border-radius: 6px;</string>
         </property>
        </column>
       </widget>
-      <widget class="QDateEdit" name="dateEdit_search">
-       <property name="geometry">
-        <rect>
-         <x>950</x>
-         <y>317</y>
-         <width>351</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>15</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QDateEdit{
-	background-color: rgb(255, 255, 255);
-	border: none;
-	border-bottom: 3px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));
-	border-radius: none;
-}
-QDateEdit:focus{
-	border-bottom: 3px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #41295a, stop:1 #2F0743);
-}</string>
-       </property>
-       <property name="locale">
-        <locale language="English" country="UnitedStates"/>
-       </property>
-       <property name="buttonSymbols">
-        <enum>QAbstractSpinBox::UpDownArrows</enum>
-       </property>
-       <property name="displayFormat">
-        <string>yyyy-MM-dd</string>
-       </property>
-       <property name="timeSpec">
-        <enum>Qt::LocalTime</enum>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btn_search">
-       <property name="geometry">
-        <rect>
-         <x>1159</x>
-         <y>321</y>
-         <width>101</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>11</pointsize>
-         <italic>true</italic>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">QPushButton {
-    border: none;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));
-    color: #fff;
-    border-radius: 6px;
-
-
-}
-QPushButton:hover {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #41295a, stop:1 #2F0743);
-}</string>
-       </property>
-       <property name="text">
-        <string>Search</string>
-       </property>
-      </widget>
       <widget class="QLabel" name="label_delete_error">
        <property name="geometry">
         <rect>
@@ -1030,9 +958,69 @@ background-color: none;</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">alternate-background-color: #E2E2E2;
+        <string notr="true">QTableView
+{
+alternate-background-color: #E2E2E2;
 background: #CAB8FF;
-border-radius: 6px;</string>
+border-radius: 6px;
+}
+
+QScrollBar:vertical
+    {
+        background-color: #ccc;
+        width: 15px;
+        margin: 15px 3px 15px 3px;
+        border: 1px transparent #2A2929;
+        border-radius: 4px;
+    }
+QScrollBar::handle:vertical
+    {
+        background-color: rgb(121, 56, 242);         /* #605F5F; */
+        min-height: 5px;
+        border-radius: 4px;
+    }
+QScrollBar::sub-line:vertical
+    {
+        margin: 3px 0px 3px 0px;
+        border-image: url(:/images/up_arrow_disabled.png);        /* # &lt;-------- */
+        height: 10px;
+        width: 10px;
+        subcontrol-position: top;
+        subcontrol-origin: margin;
+    }
+QScrollBar::add-line:vertical
+    {
+        margin: 3px 0px 3px 0px;
+        border-image: url(:/images/down_arrow_disabled.png);       /* # &lt;-------- */
+        height: 10px;
+        width: 10px;
+        subcontrol-position: bottom;
+        subcontrol-origin: margin;
+    }
+QScrollBar::sub-line:vertical:hover,QScrollBar::sub-line:vertical:on
+    {
+        border-image: url(:/images/up_arrow.png);                  /* # &lt;-------- */
+        height: 10px;
+        width: 10px;
+        subcontrol-position: top;
+        subcontrol-origin: margin;
+    }
+QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:on
+    {
+        border-image: url(:/images/down_arrow.png);                /* # &lt;-------- */
+        height: 10px;
+        width: 10px;
+        subcontrol-position: bottom;
+        subcontrol-origin: margin;
+    }
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
+    {
+        background: none;
+    }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+    {
+        background: none;
+    }</string>
        </property>
        <property name="horizontalScrollBarPolicy">
         <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -1053,7 +1041,7 @@ border-radius: 6px;</string>
          <x>1006</x>
          <y>60</y>
          <width>131</width>
-         <height>221</height>
+         <height>301</height>
         </rect>
        </property>
        <property name="font">
@@ -1063,9 +1051,69 @@ border-radius: 6px;</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">alternate-background-color: #E2E2E2;
+        <string notr="true">QTableView
+{
+alternate-background-color: #E2E2E2;
 background: #CAB8FF;
-border-radius: 6px;</string>
+border-radius: 6px;
+}
+
+QScrollBar:vertical
+    {
+        background-color: #ccc;
+        width: 15px;
+        margin: 15px 3px 15px 3px;
+        border: 1px transparent #2A2929;
+        border-radius: 4px;
+    }
+QScrollBar::handle:vertical
+    {
+        background-color: rgb(121, 56, 242);         /* #605F5F; */
+        min-height: 5px;
+        border-radius: 4px;
+    }
+QScrollBar::sub-line:vertical
+    {
+        margin: 3px 0px 3px 0px;
+        border-image: url(:/images/up_arrow_disabled.png);        /* # &lt;-------- */
+        height: 10px;
+        width: 10px;
+        subcontrol-position: top;
+        subcontrol-origin: margin;
+    }
+QScrollBar::add-line:vertical
+    {
+        margin: 3px 0px 3px 0px;
+        border-image: url(:/images/down_arrow_disabled.png);       /* # &lt;-------- */
+        height: 10px;
+        width: 10px;
+        subcontrol-position: bottom;
+        subcontrol-origin: margin;
+    }
+QScrollBar::sub-line:vertical:hover,QScrollBar::sub-line:vertical:on
+    {
+        border-image: url(:/images/up_arrow.png);                  /* # &lt;-------- */
+        height: 10px;
+        width: 10px;
+        subcontrol-position: top;
+        subcontrol-origin: margin;
+    }
+QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:on
+    {
+        border-image: url(:/images/down_arrow.png);                /* # &lt;-------- */
+        height: 10px;
+        width: 10px;
+        subcontrol-position: bottom;
+        subcontrol-origin: margin;
+    }
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
+    {
+        background: none;
+    }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+    {
+        background: none;
+    }</string>
        </property>
        <property name="horizontalScrollBarPolicy">
         <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -1084,9 +1132,9 @@ border-radius: 6px;</string>
        <property name="geometry">
         <rect>
          <x>853</x>
-         <y>313</y>
-         <width>81</width>
-         <height>41</height>
+         <y>293</y>
+         <width>131</width>
+         <height>61</height>
         </rect>
        </property>
        <property name="font">
@@ -1104,7 +1152,7 @@ border-radius: 6px;</string>
     border: none;
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));
     color: #fff;
-    border-radius: 9px;
+    border-radius: 20px;
 
 
 }
@@ -1115,6 +1163,123 @@ QPushButton:hover {
        <property name="text">
         <string>Refresh</string>
        </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_options_2">
+       <property name="geometry">
+        <rect>
+         <x>1150</x>
+         <y>230</y>
+         <width>151</width>
+         <height>151</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Arial</family>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: #E2E2E2;</string>
+       </property>
+       <property name="title">
+        <string>Delete</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <widget class="QRadioButton" name="radioButton_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>45</y>
+          <width>95</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>Category</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioButton_3">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>25</y>
+          <width>95</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>Data</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btn_delete">
+        <property name="geometry">
+         <rect>
+          <x>21</x>
+          <y>95</y>
+          <width>111</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>11</pointsize>
+          <italic>true</italic>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    border: none;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));
+    color: #fff;
+    border-radius: 6px;
+
+
+}
+QPushButton:hover {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #41295a, stop:1 #2F0743);
+}</string>
+        </property>
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+       <widget class="QRadioButton" name="radioButton">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>65</y>
+          <width>95</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Arial</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>Budget</string>
+        </property>
+       </widget>
       </widget>
      </widget>
      <widget class="QWidget" name="page_insert">
@@ -1627,6 +1792,7 @@ QPushButton:hover {
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>12</pointsize>
          </font>
         </property>
         <property name="styleSheet">
@@ -1760,6 +1926,7 @@ background-color: none;</string>
         <property name="font">
          <font>
           <family>Arial</family>
+          <pointsize>12</pointsize>
          </font>
         </property>
         <property name="styleSheet">
@@ -1778,143 +1945,6 @@ border-radius: 6px;</string>
       </widget>
      </widget>
      <widget class="QWidget" name="page_setting">
-      <widget class="QGroupBox" name="groupBox_4">
-       <property name="geometry">
-        <rect>
-         <x>470</x>
-         <y>530</y>
-         <width>371</width>
-         <height>191</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Arial</family>
-         <pointsize>8</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: #E2E2E2;</string>
-       </property>
-       <property name="title">
-        <string>Theme</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <widget class="QPushButton" name="btn_dark">
-        <property name="geometry">
-         <rect>
-          <x>248</x>
-          <y>50</y>
-          <width>41</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>11</pointsize>
-          <italic>true</italic>
-         </font>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-    border: none;
-    background-color: #202020;
-    color: #fff;
-    border-radius: 20px;
-
-
-}
-</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="btn_light">
-        <property name="geometry">
-         <rect>
-          <x>85</x>
-          <y>50</y>
-          <width>41</width>
-          <height>41</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>11</pointsize>
-          <italic>true</italic>
-         </font>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-    border: none;
-    background-color: #fff;
-    color: #fff;
-    border-radius: 20px;
-
-
-}
-</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_9">
-        <property name="geometry">
-         <rect>
-          <x>65</x>
-          <y>110</y>
-          <width>61</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string>Light</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_10">
-        <property name="geometry">
-         <rect>
-          <x>248</x>
-          <y>110</y>
-          <width>51</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true"/>
-        </property>
-        <property name="text">
-         <string>Dark</string>
-        </property>
-       </widget>
-      </widget>
       <widget class="QLabel" name="label_4">
        <property name="geometry">
         <rect>

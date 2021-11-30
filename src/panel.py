@@ -196,9 +196,69 @@ class Ui_Panel(object):
         font.setFamily("Arial")
         font.setPointSize(10)
         self.tableView_data.setFont(font)
-        self.tableView_data.setStyleSheet("alternate-background-color: #E2E2E2;\n"
+        self.tableView_data.setStyleSheet("QTableView\n"
+"{\n"
+"alternate-background-color: #E2E2E2;\n"
 "background: #CAB8FF;\n"
-"border-radius: 6px;")
+"border-radius: 6px;\n"
+"}\n"
+"\n"
+"QScrollBar:vertical\n"
+"    {\n"
+"        background-color: #ccc;\n"
+"        width: 15px;\n"
+"        margin: 15px 3px 15px 3px;\n"
+"        border: 1px transparent #2A2929;\n"
+"        border-radius: 4px;\n"
+"    }\n"
+"QScrollBar::handle:vertical\n"
+"    {\n"
+"        background-color: rgb(121, 56, 242);         /* #605F5F; */\n"
+"        min-height: 5px;\n"
+"        border-radius: 4px;\n"
+"    }\n"
+"QScrollBar::sub-line:vertical\n"
+"    {\n"
+"        margin: 3px 0px 3px 0px;\n"
+"        border-image: url(:/images/up_arrow_disabled.png);        /* # <-------- */\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: top;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"QScrollBar::add-line:vertical\n"
+"    {\n"
+"        margin: 3px 0px 3px 0px;\n"
+"        border-image: url(:/images/down_arrow_disabled.png);       /* # <-------- */\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: bottom;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"QScrollBar::sub-line:vertical:hover,QScrollBar::sub-line:vertical:on\n"
+"    {\n"
+"        border-image: url(:/images/up_arrow.png);                  /* # <-------- */\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: top;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:on\n"
+"    {\n"
+"        border-image: url(:/images/down_arrow.png);                /* # <-------- */\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: bottom;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical\n"
+"    {\n"
+"        background: none;\n"
+"    }\n"
+"QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical\n"
+"    {\n"
+"        background: none;\n"
+"    }")
         self.tableView_data.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.tableView_data.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.tableView_data.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
@@ -297,7 +357,7 @@ class Ui_Panel(object):
         self.textEdit_description.setReadOnly(True)
         self.textEdit_description.setObjectName("textEdit_description")
         self.groupBox_options = QtWidgets.QGroupBox(self.page_home)
-        self.groupBox_options.setGeometry(QtCore.QRect(1150, 30, 151, 261))
+        self.groupBox_options.setGeometry(QtCore.QRect(1150, 30, 151, 191))
         font = QtGui.QFont()
         font.setFamily("Arial")
         self.groupBox_options.setFont(font)
@@ -325,7 +385,7 @@ class Ui_Panel(object):
 "}")
         self.btn_export_csv.setObjectName("btn_export_csv")
         self.btn_chart = QtWidgets.QPushButton(self.groupBox_options)
-        self.btn_chart.setGeometry(QtCore.QRect(20, 70, 111, 41))
+        self.btn_chart.setGeometry(QtCore.QRect(20, 74, 111, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(11)
@@ -344,15 +404,15 @@ class Ui_Panel(object):
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #41295a, stop:1 #2F0743);\n"
 "}")
         self.btn_chart.setObjectName("btn_chart")
-        self.btn_delete = QtWidgets.QPushButton(self.groupBox_options)
-        self.btn_delete.setGeometry(QtCore.QRect(20, 190, 111, 41))
+        self.btn_print = QtWidgets.QPushButton(self.groupBox_options)
+        self.btn_print.setGeometry(QtCore.QRect(20, 130, 111, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(11)
         font.setItalic(True)
-        self.btn_delete.setFont(font)
-        self.btn_delete.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_delete.setStyleSheet("QPushButton {\n"
+        self.btn_print.setFont(font)
+        self.btn_print.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btn_print.setStyleSheet("QPushButton {\n"
 "    border: none;\n"
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));\n"
 "    color: #fff;\n"
@@ -363,26 +423,7 @@ class Ui_Panel(object):
 "QPushButton:hover {\n"
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #41295a, stop:1 #2F0743);\n"
 "}")
-        self.btn_delete.setObjectName("btn_delete")
-        self.radioButton = QtWidgets.QRadioButton(self.groupBox_options)
-        self.radioButton.setGeometry(QtCore.QRect(19, 160, 95, 20))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        self.radioButton.setFont(font)
-        self.radioButton.setObjectName("radioButton")
-        self.radioButton_2 = QtWidgets.QRadioButton(self.groupBox_options)
-        self.radioButton_2.setGeometry(QtCore.QRect(19, 140, 95, 20))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        self.radioButton_2.setFont(font)
-        self.radioButton_2.setObjectName("radioButton_2")
-        self.radioButton_3 = QtWidgets.QRadioButton(self.groupBox_options)
-        self.radioButton_3.setGeometry(QtCore.QRect(19, 120, 95, 20))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        self.radioButton_3.setFont(font)
-        self.radioButton_3.setChecked(True)
-        self.radioButton_3.setObjectName("radioButton_3")
+        self.btn_print.setObjectName("btn_print")
         self.progressBar = QtWidgets.QProgressBar(self.page_home)
         self.progressBar.setGeometry(QtCore.QRect(30, 308, 811, 51))
         font = QtGui.QFont()
@@ -407,7 +448,7 @@ class Ui_Panel(object):
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         self.tableWidget = QtWidgets.QTableWidget(self.page_home)
-        self.tableWidget.setGeometry(QtCore.QRect(960, 394, 321, 91))
+        self.tableWidget.setGeometry(QtCore.QRect(960, 399, 321, 91))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(11)
@@ -435,45 +476,6 @@ class Ui_Panel(object):
         font.setPointSize(11)
         item.setFont(font)
         self.tableWidget.setHorizontalHeaderItem(1, item)
-        self.dateEdit_search = QtWidgets.QDateEdit(self.page_home)
-        self.dateEdit_search.setGeometry(QtCore.QRect(950, 317, 351, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(15)
-        self.dateEdit_search.setFont(font)
-        self.dateEdit_search.setStyleSheet("QDateEdit{\n"
-"    background-color: rgb(255, 255, 255);\n"
-"    border: none;\n"
-"    border-bottom: 3px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));\n"
-"    border-radius: none;\n"
-"}\n"
-"QDateEdit:focus{\n"
-"    border-bottom: 3px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #41295a, stop:1 #2F0743);\n"
-"}")
-        self.dateEdit_search.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
-        self.dateEdit_search.setButtonSymbols(QtWidgets.QAbstractSpinBox.UpDownArrows)
-        self.dateEdit_search.setTimeSpec(QtCore.Qt.LocalTime)
-        self.dateEdit_search.setObjectName("dateEdit_search")
-        self.btn_search = QtWidgets.QPushButton(self.page_home)
-        self.btn_search.setGeometry(QtCore.QRect(1159, 321, 101, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        font.setItalic(True)
-        self.btn_search.setFont(font)
-        self.btn_search.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_search.setStyleSheet("QPushButton {\n"
-"    border: none;\n"
-"    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));\n"
-"    color: #fff;\n"
-"    border-radius: 6px;\n"
-"\n"
-"\n"
-"}\n"
-"QPushButton:hover {\n"
-"    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #41295a, stop:1 #2F0743);\n"
-"}")
-        self.btn_search.setObjectName("btn_search")
         self.label_delete_error = QtWidgets.QLabel(self.page_home)
         self.label_delete_error.setGeometry(QtCore.QRect(950, 806, 341, 21))
         font = QtGui.QFont()
@@ -490,30 +492,150 @@ class Ui_Panel(object):
         font.setFamily("Arial")
         font.setPointSize(10)
         self.tableView_budget.setFont(font)
-        self.tableView_budget.setStyleSheet("alternate-background-color: #E2E2E2;\n"
+        self.tableView_budget.setStyleSheet("QTableView\n"
+"{\n"
+"alternate-background-color: #E2E2E2;\n"
 "background: #CAB8FF;\n"
-"border-radius: 6px;")
+"border-radius: 6px;\n"
+"}\n"
+"\n"
+"QScrollBar:vertical\n"
+"    {\n"
+"        background-color: #ccc;\n"
+"        width: 15px;\n"
+"        margin: 15px 3px 15px 3px;\n"
+"        border: 1px transparent #2A2929;\n"
+"        border-radius: 4px;\n"
+"    }\n"
+"QScrollBar::handle:vertical\n"
+"    {\n"
+"        background-color: rgb(121, 56, 242);         /* #605F5F; */\n"
+"        min-height: 5px;\n"
+"        border-radius: 4px;\n"
+"    }\n"
+"QScrollBar::sub-line:vertical\n"
+"    {\n"
+"        margin: 3px 0px 3px 0px;\n"
+"        border-image: url(:/images/up_arrow_disabled.png);        /* # <-------- */\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: top;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"QScrollBar::add-line:vertical\n"
+"    {\n"
+"        margin: 3px 0px 3px 0px;\n"
+"        border-image: url(:/images/down_arrow_disabled.png);       /* # <-------- */\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: bottom;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"QScrollBar::sub-line:vertical:hover,QScrollBar::sub-line:vertical:on\n"
+"    {\n"
+"        border-image: url(:/images/up_arrow.png);                  /* # <-------- */\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: top;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:on\n"
+"    {\n"
+"        border-image: url(:/images/down_arrow.png);                /* # <-------- */\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: bottom;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical\n"
+"    {\n"
+"        background: none;\n"
+"    }\n"
+"QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical\n"
+"    {\n"
+"        background: none;\n"
+"    }")
         self.tableView_budget.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.tableView_budget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.tableView_budget.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableView_budget.setAlternatingRowColors(True)
         self.tableView_budget.setObjectName("tableView_budget")
         self.tableView_category = QtWidgets.QTableView(self.page_home)
-        self.tableView_category.setGeometry(QtCore.QRect(1006, 60, 131, 221))
+        self.tableView_category.setGeometry(QtCore.QRect(1006, 60, 131, 301))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
         self.tableView_category.setFont(font)
-        self.tableView_category.setStyleSheet("alternate-background-color: #E2E2E2;\n"
+        self.tableView_category.setStyleSheet("QTableView\n"
+"{\n"
+"alternate-background-color: #E2E2E2;\n"
 "background: #CAB8FF;\n"
-"border-radius: 6px;")
+"border-radius: 6px;\n"
+"}\n"
+"\n"
+"QScrollBar:vertical\n"
+"    {\n"
+"        background-color: #ccc;\n"
+"        width: 15px;\n"
+"        margin: 15px 3px 15px 3px;\n"
+"        border: 1px transparent #2A2929;\n"
+"        border-radius: 4px;\n"
+"    }\n"
+"QScrollBar::handle:vertical\n"
+"    {\n"
+"        background-color: rgb(121, 56, 242);         /* #605F5F; */\n"
+"        min-height: 5px;\n"
+"        border-radius: 4px;\n"
+"    }\n"
+"QScrollBar::sub-line:vertical\n"
+"    {\n"
+"        margin: 3px 0px 3px 0px;\n"
+"        border-image: url(:/images/up_arrow_disabled.png);        /* # <-------- */\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: top;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"QScrollBar::add-line:vertical\n"
+"    {\n"
+"        margin: 3px 0px 3px 0px;\n"
+"        border-image: url(:/images/down_arrow_disabled.png);       /* # <-------- */\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: bottom;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"QScrollBar::sub-line:vertical:hover,QScrollBar::sub-line:vertical:on\n"
+"    {\n"
+"        border-image: url(:/images/up_arrow.png);                  /* # <-------- */\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: top;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:on\n"
+"    {\n"
+"        border-image: url(:/images/down_arrow.png);                /* # <-------- */\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: bottom;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical\n"
+"    {\n"
+"        background: none;\n"
+"    }\n"
+"QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical\n"
+"    {\n"
+"        background: none;\n"
+"    }")
         self.tableView_category.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.tableView_category.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.tableView_category.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.tableView_category.setAlternatingRowColors(True)
         self.tableView_category.setObjectName("tableView_category")
         self.btn_refresh = QtWidgets.QPushButton(self.page_home)
-        self.btn_refresh.setGeometry(QtCore.QRect(853, 313, 81, 41))
+        self.btn_refresh.setGeometry(QtCore.QRect(853, 293, 131, 61))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(11)
@@ -524,7 +646,7 @@ class Ui_Panel(object):
 "    border: none;\n"
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));\n"
 "    color: #fff;\n"
-"    border-radius: 9px;\n"
+"    border-radius: 20px;\n"
 "\n"
 "\n"
 "}\n"
@@ -532,6 +654,53 @@ class Ui_Panel(object):
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #41295a, stop:1 #2F0743);\n"
 "}")
         self.btn_refresh.setObjectName("btn_refresh")
+        self.groupBox_options_2 = QtWidgets.QGroupBox(self.page_home)
+        self.groupBox_options_2.setGeometry(QtCore.QRect(1150, 230, 151, 151))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        self.groupBox_options_2.setFont(font)
+        self.groupBox_options_2.setStyleSheet("background-color: #E2E2E2;")
+        self.groupBox_options_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.groupBox_options_2.setObjectName("groupBox_options_2")
+        self.radioButton_2 = QtWidgets.QRadioButton(self.groupBox_options_2)
+        self.radioButton_2.setGeometry(QtCore.QRect(20, 45, 95, 20))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        self.radioButton_2.setFont(font)
+        self.radioButton_2.setObjectName("radioButton_2")
+        self.radioButton_3 = QtWidgets.QRadioButton(self.groupBox_options_2)
+        self.radioButton_3.setGeometry(QtCore.QRect(20, 25, 95, 20))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        self.radioButton_3.setFont(font)
+        self.radioButton_3.setChecked(True)
+        self.radioButton_3.setObjectName("radioButton_3")
+        self.btn_delete = QtWidgets.QPushButton(self.groupBox_options_2)
+        self.btn_delete.setGeometry(QtCore.QRect(21, 95, 111, 41))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(11)
+        font.setItalic(True)
+        self.btn_delete.setFont(font)
+        self.btn_delete.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btn_delete.setStyleSheet("QPushButton {\n"
+"    border: none;\n"
+"    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));\n"
+"    color: #fff;\n"
+"    border-radius: 6px;\n"
+"\n"
+"\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #41295a, stop:1 #2F0743);\n"
+"}")
+        self.btn_delete.setObjectName("btn_delete")
+        self.radioButton = QtWidgets.QRadioButton(self.groupBox_options_2)
+        self.radioButton.setGeometry(QtCore.QRect(20, 65, 95, 20))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        self.radioButton.setFont(font)
+        self.radioButton.setObjectName("radioButton")
         self.stackedWidget.addWidget(self.page_home)
         self.page_insert = QtWidgets.QWidget()
         self.page_insert.setObjectName("page_insert")
@@ -779,6 +948,7 @@ class Ui_Panel(object):
         self.comboBox_period_insert.setGeometry(QtCore.QRect(30, 60, 211, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
+        font.setPointSize(12)
         self.comboBox_period_insert.setFont(font)
         self.comboBox_period_insert.setStyleSheet("border: 1px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));;\n"
 "background-color: #E2E2E2;\n"
@@ -838,6 +1008,7 @@ class Ui_Panel(object):
         self.comboBox_category_insert.setGeometry(QtCore.QRect(850, 140, 221, 41))
         font = QtGui.QFont()
         font.setFamily("Arial")
+        font.setPointSize(12)
         self.comboBox_category_insert.setFont(font)
         self.comboBox_category_insert.setStyleSheet("border: 1px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));;\n"
 "background-color: #E2E2E2;\n"
@@ -849,69 +1020,6 @@ class Ui_Panel(object):
         self.stackedWidget.addWidget(self.page_insert)
         self.page_setting = QtWidgets.QWidget()
         self.page_setting.setObjectName("page_setting")
-        self.groupBox_4 = QtWidgets.QGroupBox(self.page_setting)
-        self.groupBox_4.setGeometry(QtCore.QRect(470, 530, 371, 191))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(8)
-        self.groupBox_4.setFont(font)
-        self.groupBox_4.setStyleSheet("background-color: #E2E2E2;")
-        self.groupBox_4.setAlignment(QtCore.Qt.AlignCenter)
-        self.groupBox_4.setObjectName("groupBox_4")
-        self.btn_dark = QtWidgets.QPushButton(self.groupBox_4)
-        self.btn_dark.setGeometry(QtCore.QRect(248, 50, 41, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        font.setItalic(True)
-        self.btn_dark.setFont(font)
-        self.btn_dark.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_dark.setStyleSheet("QPushButton {\n"
-"    border: none;\n"
-"    background-color: #202020;\n"
-"    color: #fff;\n"
-"    border-radius: 20px;\n"
-"\n"
-"\n"
-"}\n"
-"")
-        self.btn_dark.setText("")
-        self.btn_dark.setObjectName("btn_dark")
-        self.btn_light = QtWidgets.QPushButton(self.groupBox_4)
-        self.btn_light.setGeometry(QtCore.QRect(85, 50, 41, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(11)
-        font.setItalic(True)
-        self.btn_light.setFont(font)
-        self.btn_light.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_light.setStyleSheet("QPushButton {\n"
-"    border: none;\n"
-"    background-color: #fff;\n"
-"    color: #fff;\n"
-"    border-radius: 20px;\n"
-"\n"
-"\n"
-"}\n"
-"")
-        self.btn_light.setText("")
-        self.btn_light.setObjectName("btn_light")
-        self.label_9 = QtWidgets.QLabel(self.groupBox_4)
-        self.label_9.setGeometry(QtCore.QRect(65, 110, 61, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_9.setFont(font)
-        self.label_9.setStyleSheet("")
-        self.label_9.setObjectName("label_9")
-        self.label_10 = QtWidgets.QLabel(self.groupBox_4)
-        self.label_10.setGeometry(QtCore.QRect(248, 110, 51, 31))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(12)
-        self.label_10.setFont(font)
-        self.label_10.setStyleSheet("")
-        self.label_10.setObjectName("label_10")
         self.label_4 = QtWidgets.QLabel(self.page_setting)
         self.label_4.setGeometry(QtCore.QRect(610, 0, 131, 41))
         font = QtGui.QFont()
@@ -921,7 +1029,7 @@ class Ui_Panel(object):
         self.label_4.setStyleSheet("color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));")
         self.label_4.setObjectName("label_4")
         self.groupBox_5 = QtWidgets.QGroupBox(self.page_setting)
-        self.groupBox_5.setGeometry(QtCore.QRect(180, 170, 931, 331))
+        self.groupBox_5.setGeometry(QtCore.QRect(180, 170, 931, 360))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
@@ -1160,19 +1268,19 @@ class Ui_Panel(object):
         self.groupBox_options.setTitle(_translate("Panel", "Options"))
         self.btn_export_csv.setText(_translate("Panel", "Export csv"))
         self.btn_chart.setText(_translate("Panel", "Chart"))
-        self.btn_delete.setText(_translate("Panel", "Delete"))
-        self.radioButton.setText(_translate("Panel", "Budget"))
-        self.radioButton_2.setText(_translate("Panel", "Category"))
-        self.radioButton_3.setText(_translate("Panel", "Data"))
+        self.btn_print.setText(_translate("Panel", "Print"))
         item = self.tableWidget.verticalHeaderItem(0)
         item.setText(_translate("Panel", ">>>"))
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("Panel", "Budget"))
         item = self.tableWidget.horizontalHeaderItem(1)
         item.setText(_translate("Panel", "Amount"))
-        self.dateEdit_search.setDisplayFormat(_translate("Panel", "yyyy-MM-dd"))
-        self.btn_search.setText(_translate("Panel", "Search"))
         self.btn_refresh.setText(_translate("Panel", "Refresh"))
+        self.groupBox_options_2.setTitle(_translate("Panel", "Delete"))
+        self.radioButton_2.setText(_translate("Panel", "Category"))
+        self.radioButton_3.setText(_translate("Panel", "Data"))
+        self.btn_delete.setText(_translate("Panel", "Delete"))
+        self.radioButton.setText(_translate("Panel", "Budget"))
         self.groupBox.setTitle(_translate("Panel", "period budget"))
         self.dateEdit_from_budget.setDisplayFormat(_translate("Panel", "yyyy-MM-dd"))
         self.dateEdit_to_budget.setDisplayFormat(_translate("Panel", "yyyy-MM-dd"))
@@ -1191,9 +1299,6 @@ class Ui_Panel(object):
         self.dateEdit_insert_amount.setDisplayFormat(_translate("Panel", "yyyy-MM-dd"))
         self.textEdit_description_insert.setPlaceholderText(_translate("Panel", "Description:"))
         self.lineEdit_insert_amount.setPlaceholderText(_translate("Panel", "Amount:"))
-        self.groupBox_4.setTitle(_translate("Panel", "Theme"))
-        self.label_9.setText(_translate("Panel", "Light"))
-        self.label_10.setText(_translate("Panel", "Dark"))
         self.label_4.setText(_translate("Panel", "Setting"))
         self.groupBox_5.setTitle(_translate("Panel", "Account"))
         self.btn_logout.setText(_translate("Panel", "Log out"))
@@ -1223,11 +1328,11 @@ class Ui_Panel(object):
         self.label_13.setText(_translate("Panel", "About"))
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Panel = QtWidgets.QMainWindow()
-    ui = Ui_Panel()
-    ui.setupUi(Panel)
-    Panel.show()
-    sys.exit(app.exec_())
+# if __name__ == "__main__":
+#     import sys
+#     app = QtWidgets.QApplication(sys.argv)
+#     Panel = QtWidgets.QMainWindow()
+#     ui = Ui_Panel()
+#     ui.setupUi(Panel)
+#     Panel.show()
+#     sys.exit(app.exec_())
