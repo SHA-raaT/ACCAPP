@@ -1,7 +1,7 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtSql import *
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtPrintSupport
 
 
 from login_signup import Ui_login_signup
@@ -13,6 +13,7 @@ import hashlib
 import smtplib, ssl
 import random
 import pickle
+import csv
 
 
 try:
@@ -277,15 +278,21 @@ class panel(QMainWindow):
         self.Ui.btn_filter.clicked.connect(self.filter)
         self.Ui.btn_refresh.clicked.connect(self.refresh)
         self.Ui.tableView_data.clicked.connect(self.show_all)
+        self.Ui.btn_export_csv.clicked.connect(self.export_csv)
+        self.Ui.btn_print.clicked.connect(self.handlePreview)
+        self.Ui.btn_delete.clicked.connect(self.delete)
 
     def mousePressEvent(self, evt):
         """Select the toolbar."""
         self.oldPos = evt.globalPos()
     def mouseMoveEvent(self, evt):
         """Move the toolbar with mouse iteration."""
-        delta = QPoint(evt.globalPos() - self.oldPos)
-        self.move(self.x() + delta.x(), self.y() + delta.y())
-        self.oldPos = evt.globalPos()
+        try:
+            delta = QPoint(evt.globalPos() - self.oldPos)
+            self.move(self.x() + delta.x(), self.y() + delta.y())
+            self.oldPos = evt.globalPos()
+        except:
+            pass
 
 
     def btn_home(self):
@@ -318,7 +325,7 @@ class panel(QMainWindow):
         start_date = self.Ui.dateEdit_from_budget.date().toString('yyyy-MM-dd')
         end_date = self.Ui.dateEdit_to_budget.date().toString('yyyy-MM-dd')
         period_name = self.Ui.lineEdit_insert_budget_name.text()
-        budget = int(self.Ui.lineEdit_insert_budget.text())
+        budget = int(self.Ui.lineEdit_insert_budget.text()) if len(self.Ui.lineEdit_insert_budget.text()) > 0 else None
 
         try:
             with sqlite3.connect('Acount.db') as cnx:
@@ -389,157 +396,164 @@ class panel(QMainWindow):
         category = self.Ui.comboBox_category.currentText()
         
         if category == 'All':
-            db1 = QSqlDatabase.addDatabase("QSQLITE")
-            db1.setDatabaseName("Acount.db")
-            db1.open()
+            try:
+                db1 = QSqlDatabase.addDatabase("QSQLITE")
+                db1.setDatabaseName("Acount.db")
+                db1.open()
 
-            data_table = QSqlQueryModel()
-            data_table.setQuery(''' 
-            SELECT tag, categury, period, amount, description, date 
-            FROM data 
-            WHERE period = \'%s\' AND username = \'%s\'
-            ''' % (period, cache), db1)
-
-            with sqlite3.connect('Acount.db') as cnx:
-                cursor = cnx.cursor()
-
-                # get total amount
-                cursor.execute('''
-                SELECT SUM(amount) 
+                data_table = QSqlQueryModel()
+                data_table.setQuery(''' 
+                SELECT tag, categury, period, amount, description, date 
                 FROM data 
                 WHERE period = \'%s\' AND username = \'%s\'
-                ''' % (period, cache))
-                amount = cursor.fetchone()[0]
+                ''' % (period, cache), db1)
 
-                # get total budget
-                cursor.execute(''' 
-                SELECT budget 
-                FROM period 
-                WHERE name = \'%s\' AND username = \'%s\'
-                ''' % (period, cache))
-                budget = cursor.fetchone()[0]
+                with sqlite3.connect('Acount.db') as cnx:
+                    cursor = cnx.cursor()
 
-                self.Ui.tableWidget.setItem(0, 0, QTableWidgetItem(str(budget)))
-                self.Ui.tableWidget.setItem(0, 1, QTableWidgetItem(str(amount)))
+                    # get total amount
+                    cursor.execute('''
+                    SELECT SUM(amount) 
+                    FROM data 
+                    WHERE period = \'%s\' AND username = \'%s\'
+                    ''' % (period, cache))
+                    amount = cursor.fetchone()[0]
 
-                value = amount * 100 // budget
-                if value > 100:
-                    self.Ui.progressBar.setValue(100)
-                    self.Ui.progressBar.setFormat(f'%p < {value}%')
-                    
-                else:
-                    self.Ui.progressBar.setValue(value)
+                    # get total budget
+                    cursor.execute(''' 
+                    SELECT budget 
+                    FROM period 
+                    WHERE name = \'%s\' AND username = \'%s\'
+                    ''' % (period, cache))
+                    budget = cursor.fetchone()[0]
 
-                if value >= 50 and value <= 70:
-                    self.Ui.progressBar.setStyleSheet('''
-                    QProgressBar::chunk{
-                        border-radius: 15px;
-                        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #CAC531, stop:1 #fffc00);
-                    }
-                    QProgressBar{
-                        color: #fff;
-                        border-style: none;
-                        border-radius: 15px;
-                        text-align: center;
-                        height: 40px;
-                        background-color: #ccccff;
-                    }
-                    ''')
+                    self.Ui.tableWidget.setItem(0, 0, QTableWidgetItem(str(budget)))
+                    self.Ui.tableWidget.setItem(0, 1, QTableWidgetItem(str(amount)))
 
-                elif value > 70:
-                    self.Ui.progressBar.setStyleSheet('''
-                    QProgressBar::chunk{
-                        border-radius: 15px;
-                        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #e52d27, stop:1 #b31217);
-                    }
-                    QProgressBar{
-                        color: #fff;
-                        border-style: none;
-                        border-radius: 15px;
-                        text-align: center;
-                        height: 40px;
-                        background-color: #ccccff;
-                    }
-                    ''')
+                    value = amount * 100 // budget
+                    if value > 100:
+                        self.Ui.progressBar.setValue(100)
+                        self.Ui.progressBar.setFormat(f'%p < {value}%')
+                        
+                    else:
+                        self.Ui.progressBar.setValue(value)
+
+                    if value >= 50 and value <= 70:
+                        self.Ui.progressBar.setStyleSheet('''
+                        QProgressBar::chunk{
+                            border-radius: 15px;
+                            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #CAC531, stop:1 #fffc00);
+                        }
+                        QProgressBar{
+                            color: #fff;
+                            border-style: none;
+                            border-radius: 15px;
+                            text-align: center;
+                            height: 40px;
+                            background-color: #ccccff;
+                        }
+                        ''')
+
+                    elif value > 70:
+                        self.Ui.progressBar.setStyleSheet('''
+                        QProgressBar::chunk{
+                            border-radius: 15px;
+                            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #e52d27, stop:1 #b31217);
+                        }
+                        QProgressBar{
+                            color: #fff;
+                            border-style: none;
+                            border-radius: 15px;
+                            text-align: center;
+                            height: 40px;
+                            background-color: #ccccff;
+                        }
+                        ''')
+            except:
+                pass
 
 
         else:
-            db2 = QSqlDatabase.addDatabase("QSQLITE")
-            db2.setDatabaseName("Acount.db")
-            db2.open()
+            try:
+                db2 = QSqlDatabase.addDatabase("QSQLITE")
+                db2.setDatabaseName("Acount.db")
+                db2.open()
 
-            data_table = QSqlQueryModel()
-            data_table.setQuery(''' 
-            SELECT tag, categury, period, amount, description, date 
-            FROM data 
-            WHERE period = \'%s\' AND categury = \'%s\' AND username = \'%s\'
-            ''' % (period, category, cache), db2)
-            
-
-            with sqlite3.connect('Acount.db') as cnx:
-                cursor = cnx.cursor()
-
-                # get total amount
-                cursor.execute('''
-                SELECT SUM(amount) 
+                data_table = QSqlQueryModel()
+                data_table.setQuery(''' 
+                SELECT tag, categury, period, amount, description, date 
                 FROM data 
                 WHERE period = \'%s\' AND categury = \'%s\' AND username = \'%s\'
-                ''' % (period, category, cache))
-                amount = cursor.fetchone()[0]
+                ''' % (period, category, cache), db2)
+                
 
-                # get total budget
-                cursor.execute(''' 
-                SELECT budget 
-                FROM period 
-                WHERE name = \'%s\' AND username = \'%s\'
-                ''' % (period, cache))
-                budget = cursor.fetchone()[0]
+                with sqlite3.connect('Acount.db') as cnx:
+                    cursor = cnx.cursor()
 
-                self.Ui.tableWidget.setItem(0, 0, QTableWidgetItem(str(budget)))
-                self.Ui.tableWidget.setItem(0, 1, QTableWidgetItem(str(amount)))
+                    # get total amount
+                    cursor.execute('''
+                    SELECT SUM(amount) 
+                    FROM data 
+                    WHERE period = \'%s\' AND categury = \'%s\' AND username = \'%s\'
+                    ''' % (period, category, cache))
+                    amount = cursor.fetchone()[0]
 
-                value = amount * 100 // budget
-                if value > 100:
-                    self.Ui.progressBar.setValue(100)
-                    self.Ui.progressBar.setFormat(f'%p < {value}%')
-                    
-                else:
-                    self.Ui.progressBar.setValue(value)
+                    # get total budget
+                    cursor.execute(''' 
+                    SELECT budget 
+                    FROM period 
+                    WHERE name = \'%s\' AND username = \'%s\'
+                    ''' % (period, cache))
+                    budget = cursor.fetchone()[0]
 
-                if value >= 50 and value <= 70:
-                    self.Ui.progressBar.setStyleSheet('''
-                    QProgressBar::chunk{
-                        border-radius: 15px;
-                        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #CAC531, stop:1 #fffc00);
-                    }
-                    QProgressBar{
-                        color: #fff;
-                        border-style: none;
-                        border-radius: 15px;
-                        text-align: center;
-                        height: 40px;
-                        background-color: #ccccff;
-                    }
-                    ''')
+                    self.Ui.tableWidget.setItem(0, 0, QTableWidgetItem(str(budget)))
+                    self.Ui.tableWidget.setItem(0, 1, QTableWidgetItem(str(amount)))
 
-                elif value > 70:
-                    self.Ui.progressBar.setStyleSheet('''
-                    QProgressBar::chunk{
-                        border-radius: 15px;
-                        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #e52d27, stop:1 #b31217);
-                    }
-                    QProgressBar{
-                        color: #fff;
-                        border-style: none;
-                        border-radius: 15px;
-                        text-align: center;
-                        height: 40px;
-                        background-color: #ccccff;
-                    }
-                    ''')
+                    value = amount * 100 // budget
+                    if value > 100:
+                        self.Ui.progressBar.setValue(100)
+                        self.Ui.progressBar.setFormat(f'%p < {value}%')
+                        
+                    else:
+                        self.Ui.progressBar.setValue(value)
+
+                    if value >= 50 and value <= 70:
+                        self.Ui.progressBar.setStyleSheet('''
+                        QProgressBar::chunk{
+                            border-radius: 15px;
+                            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #CAC531, stop:1 #fffc00);
+                        }
+                        QProgressBar{
+                            color: #fff;
+                            border-style: none;
+                            border-radius: 15px;
+                            text-align: center;
+                            height: 40px;
+                            background-color: #ccccff;
+                        }
+                        ''')
+
+                    elif value > 70:
+                        self.Ui.progressBar.setStyleSheet('''
+                        QProgressBar::chunk{
+                            border-radius: 15px;
+                            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #e52d27, stop:1 #b31217);
+                        }
+                        QProgressBar{
+                            color: #fff;
+                            border-style: none;
+                            border-radius: 15px;
+                            text-align: center;
+                            height: 40px;
+                            background-color: #ccccff;
+                        }
+                        ''')
+            except:
+                pass
 
         self.Ui.tableView_data.setModel(data_table)
         self.Ui.tableView_data.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.Ui.tableView_data.setColumnHidden(0, True)
         self.Ui.tableView_data.verticalHeader().setVisible(False)
 
     def refresh(self):
@@ -550,6 +564,88 @@ class panel(QMainWindow):
         """ show all data from table data to textedit """
         show = str(self.Ui.tableView_data.selectionModel().currentIndex().data())
         self.Ui.textEdit_description.setText(show)
+
+    def export_csv(self):
+        """ export main table data to csv file """
+        path = QFileDialog.getSaveFileName(self, 'export', 'anonymous', 'CSV Files (*.csv)')
+        table = self.Ui.tableView_data.model()
+
+        if len(path[0]) != 0:
+            with open(path[0], 'w', encoding='utf-8') as ex:
+                writer = csv.writer(ex, lineterminator='\n')
+                for row in range(table.rowCount()):
+                    rowdata = []
+                    for column in range(table.columnCount()):
+                        index = table.index(row, column)
+
+                        item = str(table.data(index))
+                        rowdata.append(item) 
+
+                    writer.writerow(rowdata)
+        else:
+            pass
+
+
+    def handlePreview(self):
+        dialog = QtPrintSupport.QPrintPreviewDialog()
+        dialog.paintRequested.connect(self.handlePaintRequest)
+        dialog.exec_()
+    def handlePaintRequest(self, printer):
+        try:
+            document = QtGui.QTextDocument()
+            cursor = QtGui.QTextCursor(document)
+            model = self.Ui.tableView_data.model()
+            table = cursor.insertTable(
+                model.rowCount(), model.columnCount())
+            for row in range(table.rows()):
+                for column in range(table.columns()):
+                    index = model.index(row, column)
+                    cursor.insertText(str(model.data(index)))
+                    cursor.movePosition(QtGui.QTextCursor.NextCell)
+            document.print_(printer)
+        except:
+            pass
+
+    def delete(self):
+        """ delete selected row from tables """
+        try:
+            if self.Ui.radioButton_3.isChecked():
+                row = self.Ui.tableView_data.selectionModel().currentIndex().row()
+                index = self.Ui.tableView_data.model().index(row, 0)
+                tag = self.Ui.tableView_data.model().data(index)
+
+                with sqlite3.connect('Acount.db') as cnx:
+                    cursor = cnx.cursor()
+                    cursor.execute('''
+                    DELETE FROM data WHERE tag = \'%i\' AND username = \'%s\'
+                    ''' % (tag, cache))
+                    cnx.commit()
+
+            elif self.Ui.radioButton_2.isChecked():
+                row = self.Ui.tableView_category.selectionModel().currentIndex().row()
+                index = self.Ui.tableView_category.model().index(row, 0)
+                name = self.Ui.tableView_category.model().data(index)
+
+                with sqlite3.connect('Acount.db') as cnx:
+                    cursor = cnx.cursor()
+                    cursor.execute('''
+                    DELETE FROM category WHERE name = \'%s\' AND username = \'%s\'
+                    ''' % (name, cache))
+                    cnx.commit()
+
+            elif self.Ui.radioButton.isChecked():
+                row = self.Ui.tableView_budget.selectionModel().currentIndex().row()
+                index = self.Ui.tableView_budget.model().index(row, 0)
+                name = self.Ui.tableView_budget.model().data(index)
+
+                with sqlite3.connect('Acount.db') as cnx:
+                    cursor = cnx.cursor()
+                    cursor.execute('''
+                    DELETE FROM period WHERE name = \'%s\' AND username = \'%s\'
+                    ''' % (name, cache))
+                    cnx.commit()
+        except:
+            pass
 
 
 
