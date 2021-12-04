@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Panel(object):
     def setupUi(self, Panel):
         Panel.setObjectName("Panel")
-        Panel.resize(2461, 1287)
+        Panel.resize(2457, 1278)
         font = QtGui.QFont()
         font.setFamily("Arial")
         Panel.setFont(font)
@@ -1029,7 +1029,7 @@ class Ui_Panel(object):
         self.label_4.setStyleSheet("color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));")
         self.label_4.setObjectName("label_4")
         self.groupBox_5 = QtWidgets.QGroupBox(self.page_setting)
-        self.groupBox_5.setGeometry(QtCore.QRect(180, 170, 931, 360))
+        self.groupBox_5.setGeometry(QtCore.QRect(180, 170, 931, 381))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
@@ -1138,35 +1138,6 @@ class Ui_Panel(object):
 "background-color: none;")
         self.label_account_setting_error.setText("")
         self.label_account_setting_error.setObjectName("label_account_setting_error")
-        self.lineEdit_change_email = QtWidgets.QLineEdit(self.groupBox_5)
-        self.lineEdit_change_email.setGeometry(QtCore.QRect(550, 200, 331, 41))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        self.lineEdit_change_email.setFont(font)
-        self.lineEdit_change_email.setStyleSheet("QLineEdit{\n"
-"    background-color: #E2E2E2;\n"
-"    border: none;\n"
-"    border-bottom: 3px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgb(121, 56, 242), stop:1 rgb(43, 1, 121));\n"
-"    border-radius: none;\n"
-"}\n"
-"QLineEdit:focus{\n"
-"    border-bottom: 3px solid qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 #41295a, stop:1 #2F0743);\n"
-"}\n"
-"")
-        self.lineEdit_change_email.setObjectName("lineEdit_change_email")
-        self.checkBox_email = QtWidgets.QCheckBox(self.groupBox_5)
-        self.checkBox_email.setGeometry(QtCore.QRect(550, 50, 61, 20))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        self.checkBox_email.setFont(font)
-        self.checkBox_email.setObjectName("checkBox_email")
-        self.checkBox_username = QtWidgets.QCheckBox(self.groupBox_5)
-        self.checkBox_username.setGeometry(QtCore.QRect(550, 80, 91, 20))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        self.checkBox_username.setFont(font)
-        self.checkBox_username.setObjectName("checkBox_username")
         self.stackedWidget.addWidget(self.page_setting)
         self.page_about = QtWidgets.QWidget()
         self.page_about.setObjectName("page_about")
@@ -1191,7 +1162,7 @@ class Ui_Panel(object):
 "}")
         self.btn_contact.setObjectName("btn_contact")
         self.groupBox_6 = QtWidgets.QGroupBox(self.page_about)
-        self.groupBox_6.setGeometry(QtCore.QRect(120, 80, 1041, 521))
+        self.groupBox_6.setGeometry(QtCore.QRect(120, 80, 1041, 411))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(8)
@@ -1200,7 +1171,7 @@ class Ui_Panel(object):
         self.groupBox_6.setAlignment(QtCore.Qt.AlignCenter)
         self.groupBox_6.setObjectName("groupBox_6")
         self.textEdit_description_2 = QtWidgets.QTextEdit(self.groupBox_6)
-        self.textEdit_description_2.setGeometry(QtCore.QRect(57, 60, 921, 401))
+        self.textEdit_description_2.setGeometry(QtCore.QRect(57, 60, 921, 330))
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(14)
@@ -1307,9 +1278,6 @@ class Ui_Panel(object):
         self.lineEdit_change_username.setPlaceholderText(_translate("Panel", "Username:"))
         self.label_11.setText(_translate("Panel", "Change username"))
         self.btn_change_username.setText(_translate("Panel", "Change"))
-        self.lineEdit_change_email.setPlaceholderText(_translate("Panel", "Email:"))
-        self.checkBox_email.setText(_translate("Panel", "Email"))
-        self.checkBox_username.setText(_translate("Panel", "Username"))
         self.btn_contact.setText(_translate("Panel", "Contact me"))
         self.groupBox_6.setTitle(_translate("Panel", "About"))
         self.textEdit_description_2.setHtml(_translate("Panel", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"

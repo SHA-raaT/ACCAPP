@@ -14,11 +14,14 @@ import smtplib, ssl
 import random
 import pickle
 import csv
+import matplotlib.pyplot as plt
+import webbrowser
+
 
 
 try:
     with open('username_cache', 'rb') as user:
-        cache = pickle.load(user)
+        fcache = pickle.load(user)
 except:
     with open('username_cache', 'wb') as user:
         pickle.dump(None, user)
@@ -144,6 +147,9 @@ class login_signup(QMainWindow):
         if cursor.fetchone() is not None:
             with open('username_cache', 'wb') as user:
                 pickle.dump(username, user)
+            self.panel = panel()
+            self.panel.show()
+            self.close()
         else:
             self.Ui.label_login_error.setText('Wrong username or password')
 
@@ -206,12 +212,15 @@ class login_signup(QMainWindow):
 
 diff_style = """QPushButton{ border-radius: 20px; background-color: none; color: #fff; border: 1px solid #fff;}QPushButton:hover{ background-color: #fff; color: black;}"""
 style = """QPushButton{ border-radius: 20px; background-color: #fff; color: #000; border: 1px solid #fff;}"""
-
 class panel(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.Ui = Ui_Panel()
         self.Ui.setupUi(self)
+
+        with open('username_cache', 'rb') as user:
+            global cache
+            cache = pickle.load(user)
 
 
         # delete WindowFlag
@@ -253,7 +262,6 @@ class panel(QMainWindow):
         self.Ui.tableView_category.verticalHeader().setVisible(False)
 
         db.close()
-        db.removeDatabase("qt_sql_default_connection")
 
         # ========================
         self.Ui.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
@@ -281,6 +289,16 @@ class panel(QMainWindow):
         self.Ui.btn_export_csv.clicked.connect(self.export_csv)
         self.Ui.btn_print.clicked.connect(self.handlePreview)
         self.Ui.btn_delete.clicked.connect(self.delete)
+        self.Ui.btn_chart.clicked.connect(self.chart)
+
+        # setting page connections
+        self.Ui.btn_logout.clicked.connect(self.logout)
+        self.Ui.btn_delete_account.clicked.connect(self.delete_acount)
+        self.Ui.btn_change_username.clicked.connect(self.change)
+
+        # about page connections
+        self.Ui.btn_contact.clicked.connect(lambda: webbrowser.open('https://t.me/mani_pak'))
+
 
     def mousePressEvent(self, evt):
         """Select the toolbar."""
@@ -647,6 +665,138 @@ class panel(QMainWindow):
         except:
             pass
 
+    def chart(self):
+        ''' display barchart for categories '''
+        period = self.Ui.comboBox_period.currentText()
+
+        # get categories
+        with sqlite3.connect('Acount.db') as cnx:
+            cursor = cnx.cursor()
+            cursor.execute('''
+            SELECT categury
+            FROM data
+            WHERE period = \'%s\' AND username = \'%s\'
+            ''' % (period, cache))
+
+            categories = set(category for i in cursor.fetchall() for category in i)
+            categories = list(categories)
+            amount = list()
+            color = list()
+
+            # get total amount of categories
+            for item in categories:
+                cursor.execute('''
+                SELECT SUM(amount)
+                FROM data 
+                WHERE categury = \'%s\' AND period = \'%s\' AND username = \'%s\'
+                '''% (item, period, cache))
+                amount.append(cursor.fetchone()[0])
+
+                # get categories color code
+                cursor.execute('''
+                SELECT color
+                FROM category 
+                WHERE name = \'%s\' AND username = \'%s\'
+                '''% (item, cache))
+                color.append(cursor.fetchone()[0])
+
+            # get budget of period
+            cursor.execute('''
+            SELECT budget
+            FROM period 
+            WHERE name = \'%s\' AND username = \'%s\'
+            '''% (period, cache))
+            budget = cursor.fetchone()[0]
+
+        # displaying chart
+        count = budget // 10
+        
+        fig, (ax1, ax2) = plt.subplots(2, figsize=(12, 7))
+
+
+        ax1.bar(categories, amount, color=color)
+        ax2.pie(amount, labels=categories, colors=color, shadow=True, autopct='%.2f')
+        ax1.set_yticks(range(0, budget + 1, count))
+        ax1.set_ylabel('total budget')
+        ax1.set_xlabel('all categories')
+        fig.tight_layout()
+        plt.show()
+
+    def logout(self):
+        with open('username_cache', 'wb') as user:
+            pickle.dump(None, user)
+        register = login_signup()
+        register.show()
+        self.close()
+
+    def delete_acount(self):
+        if self.Ui.checkBox_sure.isChecked():
+            with sqlite3.connect('Acount.db') as cnx:
+                cursor = cnx.cursor()
+                cursor.execute('''
+                DELETE FROM data WHERE username = \'%s\'
+                ''' % cache)
+                cursor.execute('''
+                DELETE FROM users WHERE username = \'%s\'
+                ''' % cache)
+                cursor.execute('''
+                DELETE FROM period WHERE username = \'%s\'
+                ''' % cache)
+                cursor.execute('''
+                DELETE FROM category WHERE username = \'%s\'
+                ''' % cache)
+
+            with open('username_cache', 'wb') as user:
+                pickle.dump(None, user)
+
+            register = login_signup()
+            register.show()
+            self.close()
+        else:
+            self.Ui.label_account_setting_error.setText('Please confirm')
+            self.Ui.label_account_setting_error.setStyleSheet('color: rgb(255, 6, 51);')
+
+    def change(self):
+        uername_change = self.Ui.lineEdit_change_username.text()
+
+        try:
+            with sqlite3.connect('Acount.db') as cnx:
+                cursor = cnx.cursor()
+                cursor.execute('''
+                UPDATE users
+                SET username = \'%s\'
+                WHERE username = \'%s\'
+                '''% (uername_change, cache))
+                cursor.execute('''
+                UPDATE category
+                SET username = \'%s\'
+                WHERE username = \'%s\'
+                '''% (uername_change, cache))
+                cursor.execute('''
+                UPDATE data
+                SET username = \'%s\'
+                WHERE username = \'%s\'
+                '''% (uername_change, cache))
+                cursor.execute('''
+                UPDATE period
+                SET username = \'%s\'
+                WHERE username = \'%s\'
+                '''% (uername_change, cache))
+
+                cnx.commit()
+
+            with open('username_cache', 'wb') as user:
+                pickle.dump(uername_change, user)
+
+            self.refresh()
+        
+        except:
+            self.Ui.label_account_setting_error.setText('Username is not entered or duplicate')
+            self.Ui.label_account_setting_error.setStyleSheet('color: rgb(255, 6, 51);')
+
+
+
+
 
 
 
@@ -655,7 +805,7 @@ class panel(QMainWindow):
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
-    if cache == None:
+    if fcache == None:
         root = login_signup()
     else:
         root = panel()
