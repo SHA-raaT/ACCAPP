@@ -25,6 +25,8 @@ try:
 except:
     with open('username_cache', 'wb') as user:
         pickle.dump(None, user)
+    with open('username_cache', 'rb') as user:
+        fcache = pickle.load(user)
 
 with sqlite3.connect('Acount.db') as cnx:
     cursor = cnx.cursor()
@@ -793,7 +795,6 @@ class panel(QMainWindow):
         except:
             self.Ui.label_account_setting_error.setText('Username is not entered or duplicate')
             self.Ui.label_account_setting_error.setStyleSheet('color: rgb(255, 6, 51);')
-
 
 
 
